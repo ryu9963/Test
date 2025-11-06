@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Meine Bildergalerie</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #05060a;
+      color: #f5f5f5;
+    }
+    h1 {
+      margin-bottom: 10px;
+      font-size: 24px;
+      font-weight: 600;
+    }
+    p {
+      margin: 0 0 20px;
+      font-size: 14px;
+      color: #bbb;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+    }
+    .item {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      background: #151820;
+    }
+    .item img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      display: block;
+    }
+    .item span {
+      position: absolute;
+      left: 8px;
+      bottom: 6px;
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+    }
+    .viewer {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 9999;
+    }
+    .viewer img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 16px;
+    }
+    .viewer-close {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      font-size: 26px;
+      cursor: pointer;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <h1>Meine Bildergalerie</h1>
+  <p>Klicke auf ein Bild zum Vergrößern. Keine Werbung. Nur deine Inhalte. ✨</p>
+
+  <div class="grid" id="gallery">
+    <!-- Beispiel-Einträge – hier ersetzt du die src-Links durch deine Bilder -->
+    <div class="item" data-full="bilder/bild1.jpg">
+      <img src="bilder/bild1.jpg" alt="Bild 1">
+      <span>Bild 1</span>
+    </div>
+    <div class="item" data-full="bilder/bild2.jpg">
+      <img src="bilder/bild2.jpg" alt="Bild 2">
+      <span>Bild 2</span>
+    </div>
+    <!-- Weitere Bilder analog hinzufügen -->
+  </div>
+
+  <div class="viewer" id="viewer">
+    <span class="viewer-close" id="closeBtn">&times;</span>
+    <img id="viewerImg" src="" alt="">
+  </div>
+
+  <script>
+    const viewer = document.getElementById("viewer");
+    const viewerImg = document.getElementById("viewerImg");
+    const closeBtn = document.getElementById("closeBtn");
+
+    document.getElementById("gallery").addEventListener("click", (e) => {
+      const item = e.target.closest(".item");
+      if (!item) return;
+      const full = item.getAttribute("data-full");
+      viewerImg.src = full;
+      viewer.style.display = "flex";
+    });
+
+    const closeViewer = () => {
+      viewer.style.display = "none";
+      viewerImg.src = "";
+    };
+
+    closeBtn.addEventListener("click", closeViewer);
+    viewer.addEventListener("click", (e) => {
+      if (e.target === viewer) closeViewer();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeViewer();
+    });
+  </script>
+</body>
+</html>
